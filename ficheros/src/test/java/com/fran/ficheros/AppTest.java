@@ -1,4 +1,4 @@
-package com.fran.prueba1;
+package com.fran.ficheros;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
