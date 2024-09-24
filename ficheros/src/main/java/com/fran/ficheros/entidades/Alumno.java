@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class Alumno implements Serializable {
 	
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 2L;
 	private String curso;
 	private String nombre;
 	private double nota;

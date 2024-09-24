@@ -28,7 +28,6 @@ public class SerializacionUtils {
 		return false;
 	}
 	
-	
 	public static <T> T deserializarObjeto(String rutaCompleta) {
 		try {
 			File fichero = new File(rutaCompleta);
@@ -83,23 +82,4 @@ public class SerializacionUtils {
 		return null;
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 }
