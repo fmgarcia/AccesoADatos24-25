@@ -69,11 +69,22 @@ public class App {
 	}
 	
 	public static void pruebasSerializacion() {
-		if(SerializacionUtils.serializarObjeto("C:/ficheros/alumnos24.dat", 
+		/*if(SerializacionUtils.serializarObjeto("C:/ficheros/alumnos24.dat", 
 				new Alumno("2º DAM","Fran",10.0)))
 			System.out.println("Serialización correcta");
 		Alumno alumno = SerializacionUtils.deserializarObjeto("C:/ficheros/alumnos24.dat");
-		System.out.println(alumno);
+		System.out.println(alumno);*/
+		
+		List<Alumno> alumnos = new ArrayList<Alumno>();
+		alumnos.add(new Alumno("2º DAM","Fran",10.0));
+		alumnos.add(new Alumno("2º DAM","Paco",8.0));
+		alumnos.add(new Alumno("2º DAM","Pepe",7.0));
+		alumnos.add(new Alumno("2º DAM","David",2.0));
+		if(SerializacionUtils.serializarObjeto("C:/ficheros/lista24.dat", alumnos))
+			System.out.println("Serialización correcta");
+		alumnos.clear();
+		alumnos = SerializacionUtils.deserializarListaObjetos("C:/ficheros/lista24.dat");
+		alumnos.forEach(e->System.out.println(e));
 	}
 	
     public static void main(String[] args) {

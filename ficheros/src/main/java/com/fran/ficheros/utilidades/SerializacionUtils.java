@@ -7,10 +7,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.List;
 
-import com.fran.ficheros.entidades.Alumno;
 
-public class SerializacionUtils  {
+public class SerializacionUtils {
 	
 	public static <T> boolean serializarObjeto(String rutaCompleta, T objeto) {
 		try {
@@ -28,11 +28,13 @@ public class SerializacionUtils  {
 		return false;
 	}
 	
+	
 	public static <T> T deserializarObjeto(String rutaCompleta) {
 		try {
 			File fichero = new File(rutaCompleta);
 			FileInputStream ficheroSalida = new FileInputStream(fichero);
 			ObjectInputStream ficheroObjetos = new ObjectInputStream(ficheroSalida);
+			@SuppressWarnings("unchecked")
 			T objeto = (T)ficheroObjetos.readObject();  // Serializa
 			ficheroObjetos.close();
 			return objeto;
@@ -45,9 +47,59 @@ public class SerializacionUtils  {
 		}
 		return null;
 	}
-
+	
+	public static <T> boolean serializarListaObjetos(String rutaCompleta, List<T> objetos) {
+		
+		try {
+			ObjectOutputStream ficheroObjetos = new ObjectOutputStream(
+					new FileOutputStream(new File(rutaCompleta)));
+			ficheroObjetos.writeObject(objetos);  // Serializa
+			ficheroObjetos.close();
+			return true;
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return false;
+				
+	}
+	
+	public static <T> List<T> deserializarListaObjetos(String rutaCompleta) {
+		try {
+			ObjectInputStream ficheroObjetos = new ObjectInputStream(
+					new FileInputStream(new File(rutaCompleta)));
+			@SuppressWarnings("unchecked")
+			List<T> lista = (List<T>)ficheroObjetos.readObject();  // Serializa
+			ficheroObjetos.close();
+			return lista;
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
 	
- 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }
