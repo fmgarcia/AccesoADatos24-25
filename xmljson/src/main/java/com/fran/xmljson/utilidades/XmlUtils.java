@@ -1,6 +1,8 @@
 package com.fran.xmljson.utilidades;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -14,6 +16,8 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
+
+import com.fran.xmljson.entidades.Noticia;
 
 public class XmlUtils {
 
@@ -58,14 +62,16 @@ public class XmlUtils {
 		}
 	}
 
-	public static void procesarXmlDom() {
+	public static void procesarAsignatura() {
 
 		try {
+			// Este bloque consigue que en "doc" tengamos un xml correcto
 			File inputFile = new File("C:/ficheros/asignaturas.xml");
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 			Document doc = dBuilder.parse(inputFile);
 			doc.getDocumentElement().normalize();
+			///
 			System.out.println("Elemento base : " + doc.getDocumentElement().getNodeName());
 			NodeList nList = doc.getElementsByTagName("asignatura");
 			System.out.println();
@@ -90,4 +96,42 @@ public class XmlUtils {
 
 	}
 
+
+	public static List<Noticia> procesarMarca(String rutaCompleta) {
+
+		List<Noticia> noticias = new ArrayList<Noticia>();
+		
+		try {
+			// Este bloque consigue que en "doc" tengamos un xml correcto
+			File inputFile = new File(rutaCompleta);
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+			Document doc = dBuilder.parse(inputFile);
+			doc.getDocumentElement().normalize();
+			///
+			System.out.println("Elemento base : " + doc.getDocumentElement().getNodeName());
+			NodeList nList = doc.getElementsByTagName("item");
+			System.out.println();
+			System.out.println("Recorriendo noticias...");
+			for (int temp = 0; temp < nList.getLength(); temp++) {
+				Node nNode = nList.item(temp);
+				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+					Element eElement = (Element) nNode;
+					noticias.add(new Noticia(
+							eElement.getElementsByTagName("title").item(0).getTextContent(),
+							eElement.getElementsByTagName("guid").item(0).getTextContent(),
+							eElement.getElementsByTagName("media:content")
+							.item(0).getAttributes().getNamedItem("url").getTextContent()
+							));
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return noticias;
+
+	}
+
+	
 }
