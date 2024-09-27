@@ -16,11 +16,12 @@ public class App {
 	public static void pruebasFicheros() {
         //FicherosUtils.leerFichero("C:/ficheros/dam2425.txt");
     	//FicherosUtils.devolverLineasFichero("C:/ficheros/dam2425.txt").forEach(e->System.out.println(e));
-    	
+
     	// Imprime las líneas de más de 4 letras
     	/*FicherosUtils.devolverLineasFichero("C:/ficheros","dam2425.txt").stream()
     		.filter(e->e.length()>4)
     		.forEach(e->System.out.println(e));*/
+		
     	
     	// Obtén aquellas líneas que contengan 'a' con más de 4 letras
     	/*FicherosUtils.devolverLineasFichero("C:/ficheros","dam2425.txt").stream()
