@@ -11,19 +11,24 @@ public class App {
     	/*XmlUtils.procesarMarca("C:/ficheros/portada.xml").stream()
     	.filter(e->e.getTitulo().contains("Madrid"))
     	.forEach(e->System.out.println(e));*/
+		//String xml = InternetUtils.readUrl("https://e00-marca.uecdn.es/rss/portada.xml");
+		
+    	XmlUtils.procesarMarcaOnline("https://e00-marca.uecdn.es/rss/portada.xml").stream()
+    			.forEach(e->System.out.println(e));
+		
 	}
 	
 	
 	public static void pruebasInternetUtils() {
-		System.out.println(InternetUtils.readUrl("https://swapi.dev/api/people/4/?format=json"));
+		//System.out.println(InternetUtils.readUrl("https://swapi.dev/api/people/4/?format=json"));
 		/*System.out.println(
 				InternetUtils.readUrlList("https://api.football-data.org/v4/teams/86/matches?status=SCHEDULED"
 				,"XXX"));*/
 	}
 	
     public static void main(String[] args) {
-        //pruebasXml();
-    	pruebasInternetUtils();
+        pruebasXml();
+    	//pruebasInternetUtils();
     }
     
 }

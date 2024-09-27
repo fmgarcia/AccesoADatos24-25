@@ -2,7 +2,6 @@ package com.fran.xmljson.utilidades;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
@@ -20,7 +19,7 @@ public class InternetUtils {
 	 */
 	public static String readUrl(String web) {
 		try {
-			URL url = new URI(web).toURL();
+			URL url = new URL(web);
 			URLConnection uc = url.openConnection();
 			uc.setRequestProperty("User-Agent", "PostmanRuntime/7.20.1");
 			uc.connect();
@@ -38,7 +37,7 @@ public class InternetUtils {
 
 	public static String readUrl(String web, String token) {
 		try {
-			URL url = new URI(web).toURL();
+			URL url = new URL(web);
 			URLConnection uc = url.openConnection();
 			uc.setRequestProperty("User-Agent", "PostmanRuntime/7.20.1");
 			uc.setRequestProperty("X-Auth-Token", token);
@@ -56,7 +55,7 @@ public class InternetUtils {
 	
 	public static List<String> readUrlList(String web) {
 		try {
-			URL url = new URI(web).toURL();
+			URL url = new URL(web);
 			URLConnection uc = url.openConnection();
 			uc.setRequestProperty("User-Agent", "PostmanRuntime/7.20.1");
 			uc.connect();
@@ -74,7 +73,7 @@ public class InternetUtils {
 	
 	public static List<String> readUrlList(String web, String token) {
 		try {
-			URL url = new URI(web).toURL();
+			URL url = new URL(web);
 			URLConnection uc = url.openConnection();
 			uc.setRequestProperty("User-Agent", "PostmanRuntime/7.20.1");
 			uc.setRequestProperty("X-Auth-Token", token);

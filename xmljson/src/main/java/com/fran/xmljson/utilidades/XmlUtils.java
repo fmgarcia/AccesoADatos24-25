@@ -1,6 +1,8 @@
 package com.fran.xmljson.utilidades;
 
 import java.io.File;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -131,6 +133,75 @@ public class XmlUtils {
 		
 		return noticias;
 
+	}
+	
+	public static List<Noticia> procesarMarcaOnline(String url) {
+
+		List<Noticia> noticias = new ArrayList<Noticia>();
+		
+		try {
+			// Este bloque consigue que en "doc" tengamos un xml correcto
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+			Document doc = dBuilder.parse(url);
+			doc.getDocumentElement().normalize();
+			///
+			System.out.println("Elemento base : " + doc.getDocumentElement().getNodeName());
+			NodeList nList = doc.getElementsByTagName("item");
+			System.out.println();
+			System.out.println("Recorriendo noticias...");
+			for (int temp = 0; temp < nList.getLength(); temp++) {
+				Node nNode = nList.item(temp);
+				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+					Element eElement = (Element) nNode;
+					
+					
+					String foto = eElement.getElementsByTagName("media:content")
+							.item(0)!=null?
+							eElement.getElementsByTagName("media:content")
+							.item(0).getAttributes().getNamedItem("url").getTextContent()
+							:"";
+					
+					noticias.add(new Noticia(
+							eElement.getElementsByTagName("title").item(0).getTextContent(),
+							eElement.getElementsByTagName("guid").item(0).getTextContent(),
+							foto
+							));
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return noticias;
+
+	}
+	
+	public static List<Noticia> procesarMarcaDom(String cadena) {
+		List<Noticia> noticias = new ArrayList<Noticia>();
+		try {
+			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+			Document doc = dBuilder.parse(cadena);  // Comprueba que es un XML valido
+			doc.getDocumentElement().normalize();
+			NodeList nList = doc.getElementsByTagName("item");
+			for (int temp = 0; temp < nList.getLength(); temp++) {
+				Node nNode = nList.item(temp);
+				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+					Element eElement = (Element) nNode;
+					noticias.add(new Noticia(
+							eElement.getElementsByTagName("title").item(0).getTextContent(),
+							eElement.getElementsByTagName("guid").item(0).getTextContent(),
+							eElement.getElementsByTagName("media:content")
+							.item(0).getAttributes().getNamedItem("url").getTextContent()
+							));
+					}
+			}
+			return noticias;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	
