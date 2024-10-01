@@ -1,6 +1,7 @@
 package com.fran.xmljson;
 
 import com.fran.xmljson.utilidades.InternetUtils;
+import com.fran.xmljson.utilidades.JsonUtils;
 import com.fran.xmljson.utilidades.XmlUtils;
 
 public class App {
@@ -26,9 +27,15 @@ public class App {
 				,"XXX"));*/
 	}
 	
-    public static void main(String[] args) {
-        pruebasXml();
+    
+	public static void pruebasJson() {
+		JsonUtils.leerJsonDesdeFichero("C:/ficheros/profesor.json");
+	}
+	
+	public static void main(String[] args) {
+        //pruebasXml();
     	//pruebasInternetUtils();
+		pruebasJson();
     }
     
 }

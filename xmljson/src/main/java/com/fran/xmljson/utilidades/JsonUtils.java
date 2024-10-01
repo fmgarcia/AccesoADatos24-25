@@ -34,25 +34,17 @@ public class JsonUtils {
 			// cogiendo la edad como long
 			long edad = (long) jo.get("edad");
 			System.out.println(edad);
+			
 			// cogiendo direccion
 			Map domicilio = ((Map) jo.get("domicilio"));
 			// iterando direccion Map
-			Iterator<Map.Entry> itr1 = domicilio.entrySet().iterator();
-			while (itr1.hasNext()) {
-				Map.Entry pareja = itr1.next();
-				System.out.println(pareja.getKey() + " : " + pareja.getValue());
-			}
+			domicilio.forEach((k,v) -> System.out.println("Key: " + k + ": Value: " + v));
+			
 			// cogiendo números de teléfonos
 			JSONArray ja = (JSONArray) jo.get("numerosTelefonos");
 			// iterando números de teléfonos
-			Iterator itr2 = ja.iterator();
-			while (itr2.hasNext()) {
-				itr1 = ((Map) itr2.next()).entrySet().iterator();
-				while (itr1.hasNext()) {
-					Map.Entry pareja = itr1.next();
-					System.out.println(pareja.getKey() + " : " + pareja.getValue());
-				}
-			}
+			ja.stream().forEach(e->System.out.println(e));
+			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
