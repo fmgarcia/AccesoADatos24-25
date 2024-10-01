@@ -177,32 +177,7 @@ public class XmlUtils {
 
 	}
 	
-	public static List<Noticia> procesarMarcaDom(String cadena) {
-		List<Noticia> noticias = new ArrayList<Noticia>();
-		try {
-			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-			Document doc = dBuilder.parse(cadena);  // Comprueba que es un XML valido
-			doc.getDocumentElement().normalize();
-			NodeList nList = doc.getElementsByTagName("item");
-			for (int temp = 0; temp < nList.getLength(); temp++) {
-				Node nNode = nList.item(temp);
-				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-					Element eElement = (Element) nNode;
-					noticias.add(new Noticia(
-							eElement.getElementsByTagName("title").item(0).getTextContent(),
-							eElement.getElementsByTagName("guid").item(0).getTextContent(),
-							eElement.getElementsByTagName("media:content")
-							.item(0).getAttributes().getNamedItem("url").getTextContent()
-							));
-					}
-			}
-			return noticias;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+	
 
 	
 }
