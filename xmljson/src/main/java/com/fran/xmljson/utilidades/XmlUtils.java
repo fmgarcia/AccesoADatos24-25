@@ -154,8 +154,7 @@ public class XmlUtils {
 				Node nNode = nList.item(temp);
 				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 					Element eElement = (Element) nNode;
-					
-					
+										
 					String foto = eElement.getElementsByTagName("media:content")
 							.item(0)!=null?
 							eElement.getElementsByTagName("media:content")
