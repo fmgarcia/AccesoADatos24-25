@@ -29,7 +29,8 @@ public class App {
 	
     
 	public static void pruebasJson() {
-		JsonUtils.leerJsonDesdeFichero("C:/ficheros/profesor.json");
+		//JsonUtils.leerJsonDesdeFichero("C:/ficheros/profesor.json");
+		JsonUtils.leerLuke("C:/ficheros/luke.json");
 	}
 	
 	public static void main(String[] args) {

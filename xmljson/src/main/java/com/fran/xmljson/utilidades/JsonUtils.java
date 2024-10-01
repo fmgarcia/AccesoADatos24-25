@@ -58,5 +58,33 @@ public class JsonUtils {
 
 	}
 	
+	public static void leerLuke(String cadenaCompleta) {
+		Object obj;
+		try {	
+			// Obtener datos
+			obj = new JSONParser().parse(new FileReader(cadenaCompleta));
+			JSONObject jo = (JSONObject) obj;
+			String nombre = (String) jo.get("name");
+			String altura = (String) jo.get("height");
+			JSONArray peliculas = (JSONArray) jo.get("films");
+			
+			// mostrar datos
+			System.out.println(nombre + " tiene una altura de " + altura);
+			System.out.println("Ha participado en las siguientes películas:");
+			peliculas.forEach(e->System.out.println(e));
+			
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (org.json.simple.parser.ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+	
 
 }
