@@ -1,6 +1,9 @@
 package com.fran.xmljson;
 
-import com.fran.xmljson.utilidades.InternetUtils;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fran.xmljson.entidades.Films;
 import com.fran.xmljson.utilidades.JsonUtils;
 import com.fran.xmljson.utilidades.XmlUtils;
 
@@ -30,7 +33,33 @@ public class App {
     
 	public static void pruebasJson() {
 		//JsonUtils.leerJsonDesdeFichero("C:/ficheros/profesor.json");
-		JsonUtils.leerLuke("C:/ficheros/luke.json");
+		//JsonUtils.leerLuke("C:/ficheros/luke.json");
+		// filtro sobre la marcha
+		/*
+		JsonUtils.devolverTareasInternet("https://jsonplaceholder.typicode.com/todos").stream()
+			.filter(e->e.isCompleted()==true)
+			.forEach(e->System.out.println(e));
+		List<Tareas> tareas = JsonUtils.devolverTareasInternet("https://jsonplaceholder.typicode.com/todos");
+		*/
+		/*
+		System.out.println(
+		JsonUtils.leerStarWars("https://swapi.dev/api/people/1/?format=json")
+				);
+		*/
+		//System.out.println(JsonUtils.leerGenerico("https://swapi.dev/api/people/1/?format=json", People.class));
+		//System.out.println(JsonUtils.leerGenerico("https://swapi.dev/api/films/1/?format=json", Films.class));
+		
+		// Coger todas las películas
+		List<Films> peliculas = new ArrayList<Films>();
+		for (int i = 1; i<=6; i++) {
+			peliculas.add(
+			JsonUtils.leerGenerico("https://swapi.dev/api/films/" + i + "/?format=json", Films.class)
+			);
+		}
+		
+		peliculas.forEach(e->System.out.println(e));
+		System.out.println(peliculas.size());
+		
 	}
 	
 	public static void main(String[] args) {

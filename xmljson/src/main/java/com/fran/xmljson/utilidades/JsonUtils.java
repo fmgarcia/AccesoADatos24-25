@@ -3,13 +3,17 @@ package com.fran.xmljson.utilidades;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.text.ParseException;
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
+
+import com.fran.xmljson.entidades.People;
+import com.fran.xmljson.entidades.Tareas;
+import com.google.gson.Gson;
 
 public class JsonUtils {
 	
@@ -85,6 +89,92 @@ public class JsonUtils {
 		}
 
 	}
+	
+	public static List<Tareas> devolverTareasInternet(String url) {
+		
+		Object obj;
+		List<Tareas> resultado = new ArrayList<Tareas>();
+		try {	
+			// cogiendo el array como elemento principal
+			JSONArray ja = (JSONArray) new JSONParser().parse(InternetUtils.readUrl(url));
+				
+			ja.forEach(e->{
+				JSONObject elementoObjeto = (JSONObject) e;
+				resultado.add(new Tareas(
+						(long) elementoObjeto.get("userId"),
+						(long) elementoObjeto.get("id"),
+						(String) elementoObjeto.get("title"),
+						(boolean) elementoObjeto.get("completed")						
+						));
+			});
+			
+			return resultado;
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		
+		return null;
+	}
+	
+	
+	public static <T> List<T> devolverListaInternet(String url) {
+		
+		Object obj;
+		List<T> resultado = new ArrayList<T>();
+		try {	
+			// cogiendo el array como elemento principal
+			JSONArray ja = (JSONArray) new JSONParser().parse(InternetUtils.readUrl(url));
+				
+			ja.forEach(e->{
+				JSONObject elementoObjeto = (JSONObject) e;
+				insertarElemento(resultado, elementoObjeto);
+			});
+			
+			return resultado;
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		
+		return null;
+	}
+
+	public static <T> void insertarElemento(List<T> resultado, JSONObject elementoObjeto) {
+		resultado.add((T)new Tareas((long) elementoObjeto.get("userId"),
+				(long) elementoObjeto.get("id"),
+				(String) elementoObjeto.get("title"),
+				(boolean) elementoObjeto.get("completed")			
+				));
+	}
+	
+	
+	public static People leerStarWars(String url) {
+		return new Gson().fromJson(InternetUtils.readUrl(url), People.class);		
+	}
+	
+	public static <T> T leerGenerico(String url, Class<T> clase) {
+		return new Gson().fromJson(InternetUtils.readUrl(url), clase);		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 
 }
