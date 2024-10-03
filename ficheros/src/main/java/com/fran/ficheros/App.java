@@ -14,7 +14,7 @@ import com.fran.ficheros.utilidades.SerializacionUtils;
 public class App {
 	
 	public static void pruebasFicheros() {
-        //FicherosUtils.leerFichero("C:/ficheros/dam2425.txt");
+        //FicherosUtils.leerFichero("./data/alumnosLineas.txt");
     	//FicherosUtils.devolverLineasFichero("C:/ficheros/dam2425.txt").forEach(e->System.out.println(e));
 
     	// Imprime las líneas de más de 4 letras
@@ -57,15 +57,15 @@ public class App {
     	
     	
     	//System.out.println(FicherosUtils.devolverFichero("C:/ficheros","dam2425.txt"));
-
+        /*
     	List<String> lineas = new ArrayList<String>();
     	lineas.add("c");
     	lineas.add("d");
-    	lineas.add("e");   
+    	lineas.add("e"); */  
     	/*if(FicherosUtils.escribirFichero("C:/ficheros/prueba2425.txt", lineas))
     		System.out.println("Fichero escrito correctamente");*/
-    	if(FicherosUtils.anyadirFichero("C:/ficheros/prueba2425b.txt", lineas))
-    		System.out.println("Fichero escrito correctamente");
+    	/*if(FicherosUtils.anyadirFichero("C:/ficheros/prueba2425b.txt", lineas))
+    		System.out.println("Fichero escrito correctamente");*/
     	
 	}
 	
@@ -84,7 +84,7 @@ public class App {
 		if(SerializacionUtils.serializarObjeto("C:/ficheros/lista24.dat", alumnos))
 			System.out.println("Serialización correcta");
 		alumnos.clear();
-		alumnos = SerializacionUtils.deserializarListaObjetos("C:/ficheros/lista24.dat");
+		alumnos = SerializacionUtils.deserializarObjeto("C:/ficheros/lista24.dat");
 		alumnos.forEach(e->System.out.println(e));
 	}
 	

@@ -98,42 +98,6 @@ public class XmlUtils {
 
 	}
 
-
-	public static List<Noticia> procesarMarca(String rutaCompleta) {
-
-		List<Noticia> noticias = new ArrayList<Noticia>();
-		
-		try {
-			// Este bloque consigue que en "doc" tengamos un xml correcto
-			File inputFile = new File(rutaCompleta);
-			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-			Document doc = dBuilder.parse(inputFile);
-			doc.getDocumentElement().normalize();
-			///
-			System.out.println("Elemento base : " + doc.getDocumentElement().getNodeName());
-			NodeList nList = doc.getElementsByTagName("item");
-			System.out.println();
-			System.out.println("Recorriendo noticias...");
-			for (int temp = 0; temp < nList.getLength(); temp++) {
-				Node nNode = nList.item(temp);
-				if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-					Element eElement = (Element) nNode;
-					noticias.add(new Noticia(
-							eElement.getElementsByTagName("title").item(0).getTextContent(),
-							eElement.getElementsByTagName("guid").item(0).getTextContent(),
-							eElement.getElementsByTagName("media:content")
-							.item(0).getAttributes().getNamedItem("url").getTextContent()
-							));
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		return noticias;
-
-	}
 	
 	public static List<Noticia> procesarMarcaOnline(String url) {
 

@@ -18,7 +18,7 @@ public class App {
 		//String xml = InternetUtils.readUrl("https://e00-marca.uecdn.es/rss/portada.xml");
 		
     	XmlUtils.procesarMarcaOnline("https://e00-marca.uecdn.es/rss/portada.xml").stream()
-    			.forEach(e->System.out.println(e));
+    	.forEach(e->System.out.println(e));
 		
 	}
 	
@@ -63,9 +63,9 @@ public class App {
 	}
 	
 	public static void main(String[] args) {
-        //pruebasXml();
+        pruebasXml();
     	//pruebasInternetUtils();
-		pruebasJson();
+		//pruebasJson();
     }
     
 }
