@@ -150,6 +150,20 @@ public class JsonUtils {
 				));
 	}
 	
+	public static long devolverCuentaRegistros(String url, String count) {
+		
+		try {	
+			JSONObject ja = (JSONObject) new JSONParser().parse(InternetUtils.readUrl(url));										
+			return (long)ja.get(count);
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		
+		return -1;
+	}
+	
 	
 	public static People leerStarWars(String url) {
 		return new Gson().fromJson(InternetUtils.readUrl(url), People.class);		

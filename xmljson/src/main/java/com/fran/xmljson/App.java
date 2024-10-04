@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fran.xmljson.entidades.Films;
+import com.fran.xmljson.entidades.People;
+import com.fran.xmljson.utilidades.InternetUtils;
 import com.fran.xmljson.utilidades.JsonUtils;
 import com.fran.xmljson.utilidades.XmlUtils;
 
@@ -25,9 +27,9 @@ public class App {
 	
 	public static void pruebasInternetUtils() {
 		//System.out.println(InternetUtils.readUrl("https://swapi.dev/api/people/4/?format=json"));
-		/*System.out.println(
+		System.out.println(
 				InternetUtils.readUrlList("https://api.football-data.org/v4/teams/86/matches?status=SCHEDULED"
-				,"XXX"));*/
+				,"XXX"));
 	}
 	
     
@@ -49,23 +51,45 @@ public class App {
 		//System.out.println(JsonUtils.leerGenerico("https://swapi.dev/api/people/1/?format=json", People.class));
 		//System.out.println(JsonUtils.leerGenerico("https://swapi.dev/api/films/1/?format=json", Films.class));
 		
-		// Coger todas las películas
-		List<Films> peliculas = new ArrayList<Films>();
-		for (int i = 1; i<=6; i++) {
-			peliculas.add(
-			JsonUtils.leerGenerico("https://swapi.dev/api/films/" + i + "/?format=json", Films.class)
+		// Coger todos los personajes
+		List<People> personajes = new ArrayList<People>();
+		for (int i = 1; i<=4; i++) {
+			personajes.add(
+			JsonUtils.leerGenerico("https://swapi.dev/api/people/" + i + "/?format=json", People.class)
 			);
 		}
 		
-		peliculas.forEach(e->System.out.println(e));
-		System.out.println(peliculas.size());
+		personajes.forEach(e->System.out.println(e));
+		System.out.println(personajes.size());
 		
 	}
 	
+	public static void obtenerPeliculasPersonajes() {
+		List<Films> peliculas = new ArrayList<Films>();
+		for (long i = 1; i<=JsonUtils.devolverCuentaRegistros("https://swapi.dev/api/films/", "count"); i++) {
+			peliculas.add(
+			JsonUtils.leerGenerico("https://swapi.dev/api/films/" + i , Films.class)
+			);
+		}
+		
+		peliculas.stream()
+			.forEach(e->{ System.out.println("\n\n" + e.getTitle());
+			System.out.println("--------------------------------------");
+				e.getCharacters()
+					.forEach(p->{
+						People people = JsonUtils.leerGenerico(p , People.class);
+						System.out.println(people.getNombre());
+								}
+							);
+						}
+					);		
+	}
+	
 	public static void main(String[] args) {
-        pruebasXml();
+        //pruebasXml();
     	//pruebasInternetUtils();
 		//pruebasJson();
+		obtenerPeliculasPersonajes();
     }
     
 }
