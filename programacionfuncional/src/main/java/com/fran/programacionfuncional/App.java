@@ -2,6 +2,7 @@ package com.fran.programacionfuncional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.fran.programacionfuncional.entidades.Usuario;
 
@@ -33,10 +34,31 @@ public class App
 	
 	public static void filter() {
 		// No final
-		// personas que ganan más de 50000
-		usuarios.stream()
+		// personas que ganan más de 50000 por pantalla
+		/*usuarios.stream()
 			.filter(e->e.getSueldo()>50000)
-			.forEach(e->System.out.println(e));
+			.forEach(e->System.out.println(e));*/
+		// Crear lista de las personas que ganan más de 50000
+		List<Usuario> usuariosRicos = usuarios.stream()
+				.filter(e->e.getSueldo()>50000)
+				.collect(Collectors.toList());
+		
+		List<Usuario> usuariosRicos2 = new ArrayList<Usuario>();
+		usuarios.stream()
+				.filter(e->e.getSueldo()>50000)
+				.forEach(e->usuariosRicos2.add(e));
+		
+		List<Usuario> usuariosRicos3 = new ArrayList<Usuario>();
+		usuarios.stream()
+				.filter(e->e.getSueldo()>50000 && e.getNombre().length()>4)
+				.forEach(e->usuariosRicos3.add(e));
+		
+		List<Usuario> usuariosRicos4 = new ArrayList<Usuario>();
+		usuarios.stream()
+				.filter(e->e.getSueldo()>50000)
+				.filter(e->e.getNombre().length()>4)
+				.forEach(e->usuariosRicos4.add(e));
+		
 	}
 	
     public static void main( String[] args )
