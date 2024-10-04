@@ -14,6 +14,7 @@ import org.json.simple.parser.JSONParser;
 import com.fran.xmljson.entidades.People;
 import com.fran.xmljson.entidades.Tareas;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 public class JsonUtils {
 	
@@ -154,13 +155,10 @@ public class JsonUtils {
 		
 		try {	
 			JSONObject ja = (JSONObject) new JSONParser().parse(InternetUtils.readUrl(url));										
-			return (long)ja.get(count);
-			
+			return (long)ja.get(count);			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} 
-		
+		} 		
 		return -1;
 	}
 	
@@ -171,6 +169,29 @@ public class JsonUtils {
 	
 	public static <T> T leerGenerico(String url, Class<T> clase) {
 		return new Gson().fromJson(InternetUtils.readUrl(url), clase);		
+	}
+	
+	/**
+	 * Creamos un String con un json a partir de un objeto
+	 * @param <T> tipo del objeto
+	 * @param object nombre de la variable
+	 * @return String con el Json
+	 */
+	public static <T> String crearJson(T object) {
+		return new Gson().toJson(object);
+	}
+	
+	/**
+	 * Creamos un String con un json a partir de un objeto en un formato amigable
+	 * @param <T> tipo del objeto
+	 * @param object nombre de la variable
+	 * @return String con el Json
+	 */
+	public static <T> String crearJsonPretty(T object) {
+		return new GsonBuilder()
+				.setPrettyPrinting()
+				.create()
+				.toJson(object);
 	}
 	
 	

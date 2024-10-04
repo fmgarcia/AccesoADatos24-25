@@ -85,11 +85,18 @@ public class App {
 					);		
 	}
 	
+	public static void ejemplosImprimir() {
+		People people = JsonUtils.leerGenerico("https://swapi.dev/api/people/1/?format=json", People.class);
+		//System.out.println(JsonUtils.crearJson(people));
+		System.out.println(JsonUtils.crearJsonPretty(people));
+	}
+	
 	public static void main(String[] args) {
         //pruebasXml();
     	//pruebasInternetUtils();
 		//pruebasJson();
-		obtenerPeliculasPersonajes();
+		//obtenerPeliculasPersonajes();
+		ejemplosImprimir();
     }
     
 }
