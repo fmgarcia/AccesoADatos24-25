@@ -361,6 +361,6 @@ public class App
     	//offtopic1();
     	//reduce();
     	//joining();
-    	parallelStream();
+    	//parallelStream();
     }
 }
