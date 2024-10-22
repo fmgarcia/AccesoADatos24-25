@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.fran.jdbc.entidades.Evento;
+import com.fran.jdbc.utilidades.JdbcUtils;
 
 public class App {
 
@@ -74,10 +75,15 @@ public class App {
 		 * ejemplo2().stream() .filter(e->e.getPrecio()<13)
 		 * .forEach(e->System.out.println(e));
 		 */
-		List<Evento> eventos = ejemplo2(); // Tengo todos los eventos cargados en una lista
-		eventos.stream()
-		.filter(e->e.getPrecio()<13)
-		.forEach(e->System.out.println(e));
+//		List<Evento> eventos = ejemplo2(); // Tengo todos los eventos cargados en una lista
+//		eventos.stream()
+//		.filter(e->e.getPrecio()<13)
+//		.forEach(e->System.out.println(e));
+		if (JdbcUtils.conexionBbdd(url, usuario, password)) {
+			JdbcUtils.cerrarBbdd();
+			System.out.println("Abro y cierro correctamente");
+		}
+			
 		
 		
 	}
