@@ -8,23 +8,15 @@ import java.sql.Statement;
 
 public class JdbcUtils {
 	
-	static String url;
-	static String usuario;
-	static String password;
 	static Connection con = null;
 	static Statement statement = null;
 	static ResultSet rs = null;
 	
-	public static boolean conexionBbdd(String url_con, String usuario_con, String password_con) {
-		url = url_con;
-		usuario = usuario_con;
-		password = password_con;
+	public static boolean conexionBbdd(String url, String usuario, String password) {
 		try {
 			con = DriverManager.getConnection(url, usuario, password);
-			statement = con.createStatement();
 			return true;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return false;
@@ -32,17 +24,48 @@ public class JdbcUtils {
 	
 	public static void cerrarBbdd() {
 		try {
-			if (rs!=null && con!= null && !rs.isClosed() && !con.isClosed()) {
-				statement.close();
+			if (con!= null && !con.isClosed()) {
 				con.close();
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+	}
+	
+	public static ResultSet devolverQuery(String sql) {
+		try {
+			return statement.executeQuery(sql);
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+		return null;
+	}
+	
+	/**
+	 * Realiza actualizaciones en la base de datos
+	 * Operaciones Insert, Update, Delete o cualquier otra del DDL 
+	 * @param sql
+	 * @return
+	 */
+	public static int ejecutarDML(String sql) {
+		try {
+			return statement.executeUpdate(sql);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return -1;
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
