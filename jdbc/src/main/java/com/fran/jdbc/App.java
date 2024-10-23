@@ -79,12 +79,22 @@ public class App {
 //		eventos.stream()
 //		.filter(e->e.getPrecio()<13)
 //		.forEach(e->System.out.println(e));
-		if (JdbcUtils.conexionBbdd(url, usuario, password)) {
-			JdbcUtils.cerrarBbdd();
-			System.out.println("Abro y cierro correctamente");
+		try {
+			if (JdbcUtils.conexionBbdd(url, usuario, password)) {
+				//System.out.println("Abro y cierro correctamente");
+				ResultSet rs = JdbcUtils.devolverQuery("Select * from evento");
+				while (rs.next()) {
+					System.out.println(rs.getObject(1));
+				}
+				System.out.println("Registros modificados : " 
+				+ JdbcUtils.ejecutarDML("Insert into evento(nombre,descripcion,precio,fecha) "
+						+ "values('Evento4','descripción 4',10,'2024-10-23')"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 			
-		
+		JdbcUtils.cerrarBbdd();
 		
 	}
 	
