@@ -2,14 +2,18 @@ package com.fran.jdbc;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import com.fran.jdbc.entidades.Evento;
 import com.fran.jdbc.utilidades.JdbcUtils;
+
+
 
 public class App {
 
@@ -68,6 +72,42 @@ public class App {
 		}
 		return eventos!=null?eventos:null;
 	}
+	
+	// Ejemplo de SQL injection. Introduce '1000 or 1=1' (sin las comillas)
+	public static void ejemplo3() {
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Introduzca el Id a buscar");
+		String id = sc.nextLine();
+		try {
+			ResultSet rs = JdbcUtils.devolverQuery("Select * from evento where id="+ id);
+			while (rs.next()) {
+				System.out.println(rs.getObject(1));
+			}
+			sc.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	// Ejemplo Select con preparedStatement
+	// Con esto soluciono sql injection
+	public static void ejemplo4(int id) {
+		try {
+			Connection con = DriverManager.getConnection(url, usuario, password);
+			PreparedStatement stmt = con.prepareStatement("select * from evento where id=?");
+			stmt.setObject(1, id);
+			ResultSet rs=stmt.executeQuery();
+			while(rs.next()){
+			System.out.println(rs.getInt(1)+" "+rs.getString(2));
+			} 
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
 
 	public static void main(String[] args) {
 		//ejemplo1();
@@ -79,6 +119,7 @@ public class App {
 //		eventos.stream()
 //		.filter(e->e.getPrecio()<13)
 //		.forEach(e->System.out.println(e));
+		/*
 		try {
 			if (JdbcUtils.conexionBbdd(url, usuario, password)) {
 				//System.out.println("Abro y cierro correctamente");
@@ -93,9 +134,26 @@ public class App {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-			
-		JdbcUtils.cerrarBbdd();
-		
+		*/
+		/*
+		JdbcUtils.conexionBbdd(url, usuario, password);
+		ejemplo3();			
+		JdbcUtils.cerrarBbdd();*/
+		//ejemplo4(3);
+		try {
+			JdbcUtils.conexionBbdd(url, usuario, password);
+			//ResultSet rs = JdbcUtils.devolverPreparedStatement("select * from evento where id=?", 1);
+			List<Object> parametros = new ArrayList<Object>();
+			parametros.add(1);		
+			ResultSet rs = JdbcUtils.devolverPreparedStatement("select * from evento where id=?", parametros);
+			while (rs.next()) {
+				System.out.println(rs.getObject(1) + " " + rs.getObject(2));
+			}
+			JdbcUtils.cerrarBbdd();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	

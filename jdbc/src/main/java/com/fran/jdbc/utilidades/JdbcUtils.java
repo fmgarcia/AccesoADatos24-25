@@ -2,14 +2,18 @@ package com.fran.jdbc.utilidades;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Arrays;
+import java.util.List;
 
 public class JdbcUtils {
 	
 	static Connection con;
 	static Statement statement;
+	static PreparedStatement stmt;
 	static ResultSet rs;
 	
 	public static boolean conexionBbdd(String url, String usuario, String password) {
@@ -63,7 +67,50 @@ public class JdbcUtils {
 		}
 		return -1;
 	}
+	
+	/**
+	 * Ejecuta un preparedStament con los parametros separados por comas.
+	 * Debe haber tantos parametros como interrogaciones tenga la Select.
+	 * @param sql La select con las interrogaciones en ella
+	 * @param parametros Cualquier tipo de objeto
+	 * @return ResultSet con los datos de la consulta
+	 */
+	public static ResultSet devolverPreparedStatement(String sql, Object...parametros) {
+		return devolverPreparedStatement(sql, Arrays.asList(parametros));	
+	}
+	
+	/**
+	 * Ejecuta un preparedStament con los parametros en una lista.
+	 * Debe haber tantos parametros como interrogaciones tenga la Select.
+	 * @param sql La select con las interrogaciones en ella
+	 * @param parametros Cualquier tipo de objeto
+	 * @return ResultSet con los datos de la consulta
+	 */
+	public static ResultSet devolverPreparedStatement(String sql, List<Object> parametros) {
+		if(countMatches(sql,'?')!=parametros.size())
+			return null;
+		try {
+			stmt = con.prepareStatement(sql);
+			for(int i=0;i<parametros.size();i++) {
+				stmt.setObject(i+1, parametros.get(i));				
+			}
+			return stmt.executeQuery();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
+	/**
+	 * Método auxiliar para contar el número de ocurrencias de un caracter que le
+	 * pasamos como parámetro
+	 * @param cadena	Cadena donde buscar
+	 * @param caracterBuscado Caracter buscado
+	 * @return Número de veces que aparece el caracter en la cadena
+	 */
+	private static int countMatches(String cadena, char caracterBuscado) {
+		return (int)cadena.chars().filter(e->e==caracterBuscado).count();
+	}
 	
 	
 	
