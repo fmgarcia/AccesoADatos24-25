@@ -1,17 +1,20 @@
 package com.fran.jdbc;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 import com.fran.jdbc.entidades.Evento;
 import com.fran.jdbc.utilidades.JdbcUtils;
+import com.github.javafaker.Faker;
 
 
 
@@ -108,6 +111,53 @@ public class App {
 		}
 
 	}
+	
+	public static void insertarPersonas() {
+		String sql = """
+				INSERT INTO personas(nombre,email) 
+				VALUES
+				('Persona 1', 'email1@gmail.com'),
+				('Persona 2', 'email2@gmail.com'),
+				('Persona 3', 'email3@gmail.com'),
+				('Persona 4', 'email4@gmail.com'),
+				('Persona 5', 'email5@gmail.com'),
+				('Persona 6', 'email6@gmail.com')
+				""";
+		JdbcUtils.conexionBbdd(url, usuario, password);
+		JdbcUtils.ejecutarDML(sql);
+		JdbcUtils.cerrarBbdd();
+	}
+	
+	public static void insertarFaker()
+	{
+		Faker faker = new Faker();
+		String sql = "INSERT INTO personas(nombre,email) VALUES ";
+		for(int i=0;i<500;i++) {
+			sql += "('" + faker.name().fullName().replace("'", "") + "','" + faker.internet().emailAddress() + "'),";
+		}
+		sql += "('" + faker.name().fullName().replace("'", "") + "','" + faker.internet().emailAddress() + "')";
+		JdbcUtils.conexionBbdd(url, usuario, password);
+		JdbcUtils.ejecutarDML(sql);
+		JdbcUtils.cerrarBbdd();
+		System.out.println("Proceso finalizado correctamente");
+	}
+	
+	public static void ejemploCallable1() {
+		try {
+			Connection con = DriverManager.getConnection(url, usuario, password);
+			CallableStatement cStmt = con.prepareCall(
+					 "{call cantidadpersonas(?)}");
+					 cStmt.registerOutParameter(1, Types.INTEGER);
+					 cStmt.setString(1, "%Bayer%");
+					 cStmt.execute();
+					 int resultado = cStmt.getInt(1);
+					 System.out.println("Resultado: " + resultado); 			
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	public static void main(String[] args) {
 		//ejemplo1();
@@ -140,11 +190,12 @@ public class App {
 		ejemplo3();			
 		JdbcUtils.cerrarBbdd();*/
 		//ejemplo4(3);
+		/*
 		try {
 			JdbcUtils.conexionBbdd(url, usuario, password);
 			//ResultSet rs = JdbcUtils.devolverPreparedStatement("select * from evento where id=?", 1);
 			List<Object> parametros = new ArrayList<Object>();
-			parametros.add(1);		
+			parametros.add(1);	
 			ResultSet rs = JdbcUtils.devolverPreparedStatement("select * from evento where id=?", parametros);
 			while (rs.next()) {
 				System.out.println(rs.getObject(1) + " " + rs.getObject(2));
@@ -153,7 +204,10 @@ public class App {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
+		//insertarPersonas();
+		//insertarFaker();
+		ejemploCallable1();
 	}
 	
 	
