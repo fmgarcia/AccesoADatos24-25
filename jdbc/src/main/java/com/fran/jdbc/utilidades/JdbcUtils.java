@@ -1,11 +1,13 @@
 package com.fran.jdbc.utilidades;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.Arrays;
 import java.util.List;
 
@@ -96,6 +98,26 @@ public class JdbcUtils {
 			}
 			return stmt.executeQuery();
 		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	
+	public static Object ejecutarCallableStatement(String metodo,int tipoDevuelto, Object... parametros) {
+		if(countMatches(metodo,'?')!= parametros.length)
+			return null;
+		try {
+			CallableStatement cStmt = con.prepareCall(
+					 "{call " + metodo + "}");
+			cStmt.registerOutParameter(1, tipoDevuelto);
+			for(int i=1;i<=parametros.length;i++) {
+				cStmt.setObject(i, parametros[i-1]);
+			}
+			cStmt.execute();
+			return cStmt.getObject(1);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;

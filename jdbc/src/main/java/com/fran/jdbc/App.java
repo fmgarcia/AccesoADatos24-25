@@ -158,6 +158,62 @@ public class App {
 			e.printStackTrace();
 		}
 	}
+	
+	
+	public static void llamarFunctionMedianteStatement() {
+		int cantidad_personas = 0;
+		try {
+			JdbcUtils.conexionBbdd(url, usuario, password);
+			ResultSet rs = JdbcUtils.devolverQuery("Select * from cantidadpersonas('%Bayer%')");
+			while (rs.next()) {
+				cantidad_personas = rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		JdbcUtils.cerrarBbdd();
+		System.out.println("La cantidad de personas es: " + cantidad_personas);
+	}
+	
+	public static void llamarTotalPersonas() {
+		int cantidad_personas = 0;
+		try {
+			JdbcUtils.conexionBbdd(url, usuario, password);
+			ResultSet rs = JdbcUtils.devolverQuery("Select * from devolver_cantidad_personas()");
+			while (rs.next()) {
+				cantidad_personas = rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		JdbcUtils.cerrarBbdd();
+		System.out.println("La cantidad de personas es: " + cantidad_personas);
+	}
+	
+	public static void llamarFunctionRegistro() {
+		try {
+			Connection con = DriverManager.getConnection(url, usuario, password);
+			CallableStatement cstmt = con.prepareCall("{call listar_personas_out()}");
+			ResultSet rs = cstmt.executeQuery();
+			while (rs.next()) {
+				System.out.println("El id: " + rs.getObject(1) + " se llama " + rs.getObject(2));
+			}
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+	}
+	
+	public static void llamarProcedureGenerico() {
+		JdbcUtils.conexionBbdd(url, usuario, password);
+		int numero = (int)JdbcUtils.ejecutarCallableStatement("cantidadpersonas(?)",Types.INTEGER,"%Bayer%");
+		System.out.println("La cantidad es: " + numero);
+		JdbcUtils.cerrarBbdd();
+	}
+	
 
 	public static void main(String[] args) {
 		//ejemplo1();
@@ -207,7 +263,12 @@ public class App {
 		}*/
 		//insertarPersonas();
 		//insertarFaker();
-		ejemploCallable1();
+		//ejemploCallable1();
+		//llamarFunctionMedianteStatement();
+		//llamarTotalPersonas();
+		//llamarFunctionRegistro();
+		llamarProcedureGenerico();
+		
 	}
 	
 	
