@@ -207,6 +207,20 @@ public class App {
 		}		
 	}
 	
+	public static void llamarFunctionRegistroJbdcUtils() {
+		try {
+			JdbcUtils.conexionBbdd(url, usuario, password);
+			ResultSet rs = JdbcUtils.resultSetCallableStatement("listar_personas_out()");
+			while (rs.next()) {
+				System.out.println("El id: " + rs.getObject(1) + " se llama " + rs.getObject(2));
+			}
+			JdbcUtils.cerrarBbdd();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+	}
+	
 	public static void llamarProcedureGenerico() {
 		JdbcUtils.conexionBbdd(url, usuario, password);
 		int numero = (int)JdbcUtils.ejecutarCallableStatement("cantidadpersonas(?)",Types.INTEGER,"%Bayer%");
@@ -267,7 +281,8 @@ public class App {
 		//llamarFunctionMedianteStatement();
 		//llamarTotalPersonas();
 		//llamarFunctionRegistro();
-		llamarProcedureGenerico();
+		//llamarProcedureGenerico();
+		llamarFunctionRegistroJbdcUtils();
 		
 	}
 	

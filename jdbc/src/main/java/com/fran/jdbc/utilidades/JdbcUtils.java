@@ -7,7 +7,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Types;
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,6 +15,7 @@ public class JdbcUtils {
 	static Connection con;
 	static Statement statement;
 	static PreparedStatement stmt;
+	static CallableStatement cstmt;
 	static ResultSet rs;
 	
 	public static boolean conexionBbdd(String url, String usuario, String password) {
@@ -108,20 +108,39 @@ public class JdbcUtils {
 		if(countMatches(metodo,'?')!= parametros.length)
 			return null;
 		try {
-			CallableStatement cStmt = con.prepareCall(
+			cstmt = con.prepareCall(
 					 "{call " + metodo + "}");
-			cStmt.registerOutParameter(1, tipoDevuelto);
+			cstmt.registerOutParameter(1, tipoDevuelto);
 			for(int i=1;i<=parametros.length;i++) {
-				cStmt.setObject(i, parametros[i-1]);
+				cstmt.setObject(i, parametros[i-1]);
 			}
-			cStmt.execute();
-			return cStmt.getObject(1);
+			cstmt.execute();
+			return cstmt.getObject(1);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
 	}
+	
+	public static ResultSet resultSetCallableStatement(String metodo,Object... parametros) {
+		if(countMatches(metodo,'?')!= parametros.length)
+			return null;
+		try {
+			cstmt = con.prepareCall("{call " + metodo + "}");			
+			for(int i=1;i<=parametros.length;i++) {
+				cstmt.setObject(i, parametros[i-1]);
+			}			
+			return cstmt.executeQuery();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	
+	
 
 	/**
 	 * Método auxiliar para contar el número de ocurrencias de un caracter que le
