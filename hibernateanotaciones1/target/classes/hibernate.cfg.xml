@@ -10,5 +10,7 @@
         <property name="hibernate.connection.username">postgres</property>
         <property name="hibernate.default_schema">public</property>
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
+    	<mapping class="com.fran.hibernateanotaciones1.entidades.Autores"/>
+        <mapping class="com.fran.hibernateanotaciones1.entidades.Libros"/>
     </session-factory>
 </hibernate-configuration>
