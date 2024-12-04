@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Generated 15 nov 2024, 16:03:37 by Hibernate Tools 6.5.1.Final --><!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN" "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.fran.bibliotecah2.entidades.Autores" optimistic-lock="none" table="autores">
+        <id name="cod" type="string">
+            <column length="5" name="cod"/>
+            <generator class="assigned"/>
+        </id>
+        <property name="nombre" type="string">
+            <column length="60" name="nombre"/>
+        </property>
+        <set fetch="select" inverse="true" lazy="true" name="libroses" table="libros">
+            <key>
+                <column length="5" name="codautor"/>
+            </key>
+            <one-to-many class="com.fran.bibliotecah2.entidades.Libros"/>
+        </set>
+    </class>
+</hibernate-mapping>
