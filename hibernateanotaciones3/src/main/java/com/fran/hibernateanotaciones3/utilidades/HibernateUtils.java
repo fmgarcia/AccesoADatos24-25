@@ -1,4 +1,4 @@
-package com.fran.hibernateanotaciones2.utilidades;
+package com.fran.hibernateanotaciones3.utilidades;
 
 import java.util.List;
 import java.util.logging.Logger;
