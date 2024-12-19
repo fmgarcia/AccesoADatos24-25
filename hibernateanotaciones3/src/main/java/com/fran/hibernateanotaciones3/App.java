@@ -1,5 +1,6 @@
 package com.fran.hibernateanotaciones3;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
@@ -58,6 +59,52 @@ public class App
 		}
 	}
 	
+	public static void ejemploNativeQuery() {
+		HashMap<String, Object> parametros = new HashMap<String, Object>();
+		parametros.put("name", "%Libro%");
+		List<Libros> resultados = HibernateUtils.nativeQuery(
+				"SELECT * FROM libros where titulo like :name",
+				Libros.class,
+				parametros);
+        if(resultados.isEmpty()) {
+            System.out.println("No hay resultados");
+            return;
+        }
+		for (Libros resultado : resultados) {
+            System.out.println(resultado);
+        }            
+	}
+	
+	public static void ejemploNamedQuery() {
+		HashMap<String, Object> parametros = new HashMap<String, Object>();
+        parametros.put("titulo", "Libro Fran1");
+        List<Libros> resultados = HibernateUtils.namedQuery(
+                "Libros.findByTitulo",
+                Libros.class,
+                parametros);
+        if(resultados.isEmpty()) {
+            System.out.println("No hay resultados");
+            return;
+        }
+        for (Libros resultado : resultados) {
+            System.out.println(resultado);
+        }
+	}
+	
+	public static void ejemploNamedQuerybyId() {
+		HashMap<String, Object> parametros = new HashMap<String, Object>();
+        parametros.put("id", 8);
+        Libros resultado = HibernateUtils.namedQueryById(
+                "Libros.findById",
+                Libros.class,
+                parametros);
+        if(resultado==null) {
+            System.out.println("No existe ese Id");
+            return;
+        }        
+        System.out.println(resultado);
+	}
+	
 	
     public static void main( String[] args )
     {
@@ -70,7 +117,10 @@ public class App
 
         
 		//probarEscribir();
-		insertarAutoryLibro();
+		//insertarAutoryLibro();
+		//ejemploNativeQuery();
+		//ejemploNamedQuery();
+		ejemploNamedQuerybyId();
 		
 		sc.close();
 		HibernateUtils.cerrarConexion();

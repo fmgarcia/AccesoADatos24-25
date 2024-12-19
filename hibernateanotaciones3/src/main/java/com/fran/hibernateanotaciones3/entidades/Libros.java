@@ -2,10 +2,13 @@ package com.fran.hibernateanotaciones3.entidades;
 
 import java.util.HashSet;
 import java.util.Set;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
@@ -14,6 +17,13 @@ import jakarta.persistence.Table;
  */
 @Entity
 @Table(name = "libros")
+@NamedQueries({
+	 @NamedQuery(name = "Libros.findAll",
+	 query = "SELECT l FROM Libros l"),
+	 @NamedQuery(name = "Libros.findById",
+	 query = "SELECT l FROM Libros l WHERE l.id = :id"),
+	 @NamedQuery(name = "Libros.findByTitulo",
+	 query = "SELECT l FROM Libros l WHERE l.titulo = :titulo")})
 public class Libros implements java.io.Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -62,5 +72,11 @@ public class Libros implements java.io.Serializable {
 	public void setEscribirs(Set<Escribir> escribirs) {
 		this.escribirs = escribirs;
 	}
+
+	@Override
+	public String toString() {
+		return "Libros [id=" + id + ", titulo=" + titulo + "]";
+	}
+	
 
 }
