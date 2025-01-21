@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title th:text="${titulo}"></title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"></link>
+</head>
+<body>
+	<h1 th:text="${titulo}"></h1>
+	
+	<table th:if="${not clientes.isEmpty()}">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Nombre</th>
+				<th>Apellido</th>
+				<th>Email</th>
+				<th>Create at</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="cliente: ${clientes}">
+				<td th:text="${cliente.id}"></td>
+				<td th:text="${cliente.nombre}"></td>
+				<td th:text="${cliente.apellido}"></td>
+				<td th:text="${cliente.email}"></td>
+				<td th:text="${cliente.createAt}"></td>
+			</tr>
+		</tbody>
+	</table>
+	
+	<p><a th:href="@{/clientes}">Volver</a></p>
+</body>
+</html>

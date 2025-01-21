@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${titulo}"></title>
+</head>
+<body>
+    <h1 th:text="${titulo}"></h1>
+    
+    <ul>
+        <li><a th:href="@{/clientes/listar}">Listar</a></li>
+        <li><a th:href="@{/clientes/anyadir}">Añadir</a></li>
+    </ul>
+    
+    <p><a th:href="@{/}">Volver</a></p>
+</body>
+</html>

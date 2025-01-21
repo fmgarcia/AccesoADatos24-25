@@ -1,6 +1,7 @@
 package com.fran.springboot.backend.mvc.controllers;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fran.springboot.backend.mvc.models.dto.ClienteDto;
 import com.fran.springboot.backend.mvc.models.entity.Cliente;
 import com.fran.springboot.backend.mvc.models.services.IClienteService;
 
@@ -27,19 +29,19 @@ import jakarta.validation.Valid;
 
 @CrossOrigin(origins = {"*"}) // Para permitir peticiones desde cualquier origen
 @RestController
-@RequestMapping("/clientes")
+@RequestMapping("/api")
 public class ClienteRestController {
 	
 	// Inyectamos el servicio
 	@Autowired
 	private IClienteService clienteService;
 
-	@GetMapping({"/", ""})
+	@GetMapping({"/clientes/", "/clientes"})
 	public List<Cliente> listar() {
 		return clienteService.findAll();
 	}
 	
-	@GetMapping("/{id}")
+	@GetMapping("/clientes/{id}")
 	public ResponseEntity<?> ver(@PathVariable Long id) {
 		Cliente cliente = null;
 		Map<String, Object> response = new HashMap<>();
@@ -57,7 +59,7 @@ public class ClienteRestController {
 		return new ResponseEntity<Cliente>(cliente, HttpStatus.OK);
 	}
 	
-	@PostMapping({"/", ""})
+	@PostMapping({"/clientes/", "/clientes"})
 	public ResponseEntity<?> crear(@Valid @RequestBody Cliente cliente, BindingResult result) {
         Cliente clienteNuevo = null;
         Map<String, Object> response = new HashMap<>();
@@ -83,7 +85,7 @@ public class ClienteRestController {
         return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
 	}
 	
-	@DeleteMapping("/{id}")	
+	@DeleteMapping("/clientes/{id}")	
 	public ResponseEntity<?> delete(@PathVariable Long id) {
 		Cliente clienteBorrado = clienteService.findById(id);
 		Map<String, Object> response = new HashMap<>();
@@ -103,7 +105,7 @@ public class ClienteRestController {
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
 	}
 	
-	@PutMapping("/{id}")
+	@PutMapping("/clientes/{id}")
 	public ResponseEntity<?> update(@Valid @RequestBody Cliente cliente, BindingResult result, @PathVariable Long id) {
 		Cliente clienteActual = clienteService.findById(id);
 		Cliente clienteActualizado = null;
@@ -136,5 +138,44 @@ public class ClienteRestController {
 		response.put("cliente", clienteActualizado);
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
 	}
+	
+	@GetMapping("/clientesdto")
+	public List<ClienteDto> indexdto() {
+	    List<Cliente> clientes = clienteService.findAll();
+	    List<ClienteDto> clientesDTO = new ArrayList<>();
+	    //ModelMapper modelMapper = new ModelMapper();
+	    clientes.forEach(cliente -> {
+	        //ClienteDTO clientedto = modelMapper.map(cliente, ClienteDto.class);
+	        ClienteDto clientedto = new ClienteDto(cliente.getId(), cliente.getNombre(), cliente.getEmail());
+	        clientesDTO.add(clientedto);
+	    });
+	    return clientesDTO;
+	}
+	
+	@GetMapping("/clientesdto/{id}")
+	public ResponseEntity<?> dto(@PathVariable Long id) {
+	    Cliente cliente = null;
+	    Map<String, Object> respuesta = new HashMap<String, Object>();
+	    ClienteDto clienteDto = new ClienteDto();
+
+	    try {
+	        cliente = clienteService.findById(id);
+	    } catch (Exception e) { // Base de datos inaccesible
+	        respuesta.put("mensaje", "Error al realizar la consulta sobre la base de datos");
+	        respuesta.put("error", e.getMessage().concat(" : ").concat(e.getStackTrace().toString()));
+	        return new ResponseEntity<Map<String, Object>>(respuesta, HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
+
+	    if (cliente == null) { // Hemos buscado un id que no existe
+	        respuesta.put("mensaje", "El Identificador buscado no existe");
+	        return new ResponseEntity<Map<String, Object>>(respuesta, HttpStatus.NOT_FOUND);
+	    }
+
+	    clienteDto.setId(cliente.getId());
+	    clienteDto.setNombre(cliente.getNombre());
+	    clienteDto.setEmail(cliente.getEmail());
+	    return new ResponseEntity<ClienteDto>(clienteDto, HttpStatus.OK);
+	}
+	
 	
 }

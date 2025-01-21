@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title th:text="${titulo}"></title>
+</head>
+<body>
+	<h1 th:text="${titulo}"></h1>
+	<form th:action="@{/clientes/create}" th:object="${cliente}" method="post">
+		<div class="errorblock" th:if="${#fields.hasErrors('*')}">
+	        <ul>
+	            <li th:each="err : ${#fields.errors('*')}"
+	                th:text="${err}">Input is incorrect</li>
+	        </ul>
+	    </div>
+	    <fieldset>
+	        <legend>Datos del cliente</legend>
+	        <table>
+	            <tr>
+	                <td><label th:text="${nombre}">Nombre: </label></td>
+	                <td><input type="text" th:field="*{nombre}" minlength="4" maxlength="12" required/></td>
+	            </tr>
+	            <tr>
+	                <td><label th:text="${apellido}">Apellido: </label></td>
+	                <td><input type="text" th:field="*{apellido}" required /></td>
+	            </tr>
+	            <tr>
+	                <td><label th:text="${email}">Correo: </label></td>
+	                <td><input type="email" th:field="*{email}" required /></td>
+	            </tr>
+	            
+	            <tr>
+	                <td><button type="submit">Registrar</button></td>
+	            </tr>
+	        </table>
+	    </fieldset>
+	</form>
+	<p><a th:href="@{/clientes}">Volver</a></p>
+</body>
+</html>
